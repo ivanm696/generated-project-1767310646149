@@ -1,24 +1,21 @@
 const express = require('express');
 const app = express();
-const routes = require('./routes'); // Убедись, что файл routes.js лежит рядом
+// Подключаем маршруты из твоей папки /routes
+const routes = require('./routes/index'); // Проверь путь к файлу маршрутов
 
 app.use(express.json());
 
-// Главный маршрут (root), который ищет Vercel
+// Обязательно добавляем обработку корня, чтобы не было ошибки "root"
 app.get('/', (req, res) => {
-  res.status(200).send('Сервер успешно запущен и работает!');
+  res.send('API работает успешно!');
 });
 
-// Подключение твоих API маршрутов
 app.use('/api', routes);
 
-// Экспорт для Vercel (без этого будет ошибка 500)
+// Экспорт для Vercel
 module.exports = app;
 
-// Запуск сервера только для локальной разработки
+// Запуск только для локальной разработки
 if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Сервер запущен на http://localhost:${PORT}`);
-  });
+  app.listen(3000, () => console.log('Локальный сервер на порту 3000'));
 }
